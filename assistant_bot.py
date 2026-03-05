@@ -48,26 +48,26 @@ def main():
     contacts = {}
     print("Welcome to the assistant bot!")
     
+    commands = {
+        "hello": lambda args: print("How can I help you?"),
+        "add": lambda args: print(add_contact(args, contacts)),
+        "change": lambda args: print(change_contact(args, contacts)),
+        "phone": lambda args: print(show_phone(args, contacts)),
+        "all": lambda args: print(show_all(contacts)),
+        "exit": lambda args: exit("Good bye!"),
+        "close": lambda args: exit("Good bye!"),
+    }
+
     while True:
-        user_input = input("Enter a command: ")
-        if not user_input.strip():
-            continue  # пропускаємо пустий ввід
+        user_input = input("Enter a command: ").strip()
+        if not user_input:
+            continue
 
         command, *args = parse_input(user_input)
 
-        if command in ["close", "exit"]:
-            print("Good bye!")
-            break
-        elif command == "hello":
-            print("How can I help you?")
-        elif command == "add":
-            print(add_contact(args, contacts))
-        elif command == "change":
-            print(change_contact(args, contacts))
-        elif command == "phone":
-            print(show_phone(args, contacts))
-        elif command == "all":
-            print(show_all(contacts))
+        # Викликаємо команду через словник або повідомляємо про невідому
+        if command in commands:
+            commands[command](args)
         else:
             print("Invalid command.")
 
